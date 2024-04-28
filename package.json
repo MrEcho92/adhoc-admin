@@ -27,6 +27,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "npx prettier --write src/",
+    "lint": " npx eslint src --ext .ts,.tsx",
     "prepare": "husky"
   },
   "lint-staged": {
