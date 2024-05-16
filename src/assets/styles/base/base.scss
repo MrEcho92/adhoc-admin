@@ -12,6 +12,11 @@ html body {
   overflow-x: hidden;
 }
 
+#root {
+  height: 100%;
+  width: 100%;
+}
+
 .App {
   width: 100%;
   min-width: 100%;
