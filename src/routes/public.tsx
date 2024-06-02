@@ -1,19 +1,16 @@
 import { RouteObject } from "react-router-dom";
 import { LandingRoutes } from "../features/landing/routes";
 import { AuthRoutes } from "../features/auth/routes";
+import { PublicBaseLayout } from "../components";
 
 export const publicRoutes: RouteObject[] = [
   {
     path: "/",
-    element: <LandingRoutes />,
+    element: <PublicBaseLayout />,
     children: [
       {
-        path: "about",
-        element: <div>About page</div>,
-      },
-      {
-        path: "how",
-        element: <div>How does it work</div>,
+        index: true,
+        element: <LandingRoutes />,
       },
     ],
   },
