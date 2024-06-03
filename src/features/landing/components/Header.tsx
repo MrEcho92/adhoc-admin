@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PaletteMode } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -18,6 +18,7 @@ const logoStyle = {
 };
 
 export function Header() {
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -135,8 +136,8 @@ export function Header() {
                 variant="text"
                 size="small"
                 component="a"
-                href="/material-ui/getting-started/templates/sign-in/"
                 target="_blank"
+                onClick={() => navigate("/auth/login")}
               >
                 Sign in
               </Button>
