@@ -133,7 +133,7 @@ export function Header() {
             >
               <Button
                 color="primary"
-                variant="text"
+                variant="contained"
                 size="small"
                 component="a"
                 target="_blank"

@@ -20,8 +20,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" mt={1}>
       {"Copyright © "}
-      {new Date().getFullYear()}
-      EasyMove
+      {new Date().getFullYear()} EasyMove
     </Typography>
   );
 }
