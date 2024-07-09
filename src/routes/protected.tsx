@@ -3,7 +3,7 @@ import { Navigate, RouteObject, Outlet } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { CircularProgress } from "@mui/material";
 import { ProtectedLayout } from "../components/layout";
-import { Dashboard } from "../features/dashboard";
+import { Dashboard, ChangeAddress } from "../features/dashboard";
 import { Header } from "../components";
 import { SidePanel } from "../components/sections/side-panel";
 
@@ -28,6 +28,7 @@ export function App() {
               flex: "1 1 auto",
               flexDirection: "column",
               width: "100%",
+              padding: "15px",
             }}
           >
             <Outlet />
@@ -46,6 +47,10 @@ export const protectRoutes: RouteObject[] = [
       {
         index: true,
         element: <Dashboard />,
+      },
+      {
+        path: "/app/create",
+        element: <ChangeAddress />,
       },
       {
         path: "*",

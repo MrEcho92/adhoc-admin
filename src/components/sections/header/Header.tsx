@@ -6,8 +6,8 @@ export function Header() {
     <Box
       component="header"
       sx={{
-        backgroundColor: "blue",
-        color: "white",
+        backgroundColor: "#24292e",
+        color: "#FFFF",
         position: "fixed",
         width: "100%",
         zIndex: (theme) => theme.zIndex.appBar,
@@ -29,16 +29,14 @@ export function Header() {
               display: "inline-flex",
               height: 24,
               width: 24,
+              color: "#FFFF",
             }}
           >
-            Logo
+            EasyMove
           </Box>
         </Stack>
         <Stack alignItems="center" direction="row" spacing={2}>
-          <Avatar
-            src="/assets/avatars/avatar-chen-simmons.jpg"
-            variant="rounded"
-          />
+          <Avatar />
         </Stack>
       </Stack>
     </Box>

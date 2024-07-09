@@ -2,9 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import "./index.scss";
 import App from "./App";
 import theme from "./core/theme/theme";
+import { ModalProvider } from "./components";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(
@@ -13,9 +16,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <ThemeProvider theme={theme}>
+          <ModalProvider>
+            <App />
+          </ModalProvider>
+        </ThemeProvider>
+      </LocalizationProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );
