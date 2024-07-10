@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import ProgressStepper from "../components/ProgressStepper";
 import Box from "@mui/material/Box";
-import { AddressFinder, SelectCategories } from "../components";
+import {
+  AddressFinder,
+  SelectCategories,
+  ConfirmSelection,
+} from "../components";
 import { useModal } from "../../../components";
 
 export function ChangeAddress() {
@@ -40,7 +44,13 @@ export function ChangeAddress() {
   }
 
   function handleConfirmModal() {
-    openModal(<div>Modal test!!!</div>);
+    openModal(
+      <ConfirmSelection
+        movingDate={movingDate}
+        prevAddress={prevAddress}
+        newAddress={newAddress}
+      />,
+    );
   }
 
   return (
