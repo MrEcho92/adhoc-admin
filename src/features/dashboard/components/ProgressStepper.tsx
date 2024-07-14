@@ -11,6 +11,7 @@ type ProgressStepperProps = {
   activeStep: number;
   setActiveStep: Dispatch<React.SetStateAction<number>>;
   handleConfirmModal?: () => void;
+  isDisabled: boolean;
 };
 
 export default function ProgressStepper({
@@ -19,6 +20,7 @@ export default function ProgressStepper({
   activeStep,
   setActiveStep,
   handleConfirmModal,
+  isDisabled,
 }: ProgressStepperProps) {
   const theme = useTheme();
 
@@ -36,13 +38,13 @@ export default function ProgressStepper({
 
   return (
     <MobileStepper
-      variant="progress"
+      variant="dots"
       steps={steps}
       position="static"
       activeStep={activeStep}
-      sx={{ width: "100%", flexGrow: 1 }}
+      sx={{ width: "60%", flexGrow: 1, m: "auto", my: 2 }}
       nextButton={
-        <Button size="small" onClick={handleNext}>
+        <Button size="small" onClick={handleNext} disabled={isDisabled}>
           {activeStep === lastStep ? "Finish" : "Next"}
           {theme.direction === "rtl" ? (
             <KeyboardArrowLeft />

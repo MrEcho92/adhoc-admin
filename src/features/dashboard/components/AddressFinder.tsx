@@ -12,13 +12,18 @@ type AddressFinderProps = {
   setMovingDate?: Dispatch<React.SetStateAction<Date | null>>;
   setPrevAddress?: Dispatch<React.SetStateAction<string>>;
   setNewAddress?: Dispatch<React.SetStateAction<string>>;
+  setIsCompleted?: Dispatch<React.SetStateAction<boolean>>;
 };
 
-export function AddressFinder({ setMovingDate }: AddressFinderProps) {
+export function AddressFinder({
+  setMovingDate,
+  setPrevAddress,
+  setNewAddress,
+}: AddressFinderProps) {
   return (
     <Box p={2}>
       <Typography variant="h4">
-        Tell us your moving date and your address.
+        Tell us your moving date and address.
       </Typography>
       <Box
         sx={{
@@ -27,7 +32,7 @@ export function AddressFinder({ setMovingDate }: AddressFinderProps) {
           gap: 2,
           maxWidth: LargeWidth,
           m: "auto",
-          pt: 10,
+          pt: 8,
         }}
       >
         <Box>
@@ -41,12 +46,14 @@ export function AddressFinder({ setMovingDate }: AddressFinderProps) {
           postcodeLabel="Your old postcode"
           addressLabel="Previous address"
           width={LargeWidth}
+          onChange={setPrevAddress}
         />
         <Divider />
         <AddressField
           postcodeLabel="Your new postcode"
           addressLabel="New address"
           width={LargeWidth}
+          onChange={setNewAddress}
         />
       </Box>
     </Box>

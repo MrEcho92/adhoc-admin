@@ -3,21 +3,12 @@ import AddHomeOutlinedIcon from "@mui/icons-material/AddHomeOutlined";
 
 export const SidePanelItems = [
   {
-    href: "/",
+    href: "/app",
     icon: (
       <SvgIcon>
         <AddHomeOutlinedIcon />
       </SvgIcon>
     ),
     label: "Home",
-  },
-  {
-    href: "/orders",
-    icon: (
-      <SvgIcon>
-        <AddHomeOutlinedIcon />
-      </SvgIcon>
-    ),
-    label: "Orders",
   },
 ];

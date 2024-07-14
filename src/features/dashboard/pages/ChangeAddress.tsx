@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProgressStepper from "../components/ProgressStepper";
 import Box from "@mui/material/Box";
 import {
@@ -9,12 +9,24 @@ import {
 import { useModal } from "../../../components";
 
 export function ChangeAddress() {
-  const { openModal } = useModal();
+  const { openModal, closeModal } = useModal();
   const [activeStep, setActiveStep] = useState<number>(0);
   const [movingDate, setMovingDate] = useState<Date | null>(null);
   const [prevAddress, setPrevAddress] = useState<Readonly<string>>("");
   const [newAddress, setNewAddress] = useState<Readonly<string>>("");
-  const [categories, setCategories] = useState<ReadonlyArray<string>>([]);
+  const [selectedCategories, setSelectedCategories] = useState<
+    ReadonlyArray<string>
+  >([]);
+  const [isCompleted, setIsCompleted] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (movingDate && prevAddress && newAddress) {
+      console.log(movingDate, prevAddress, newAddress);
+      setIsCompleted(false);
+    } else {
+      setIsCompleted(true);
+    }
+  }, [movingDate, prevAddress, newAddress]);
 
   function view(): React.ReactNode {
     let step;
@@ -25,14 +37,16 @@ export function ChangeAddress() {
             setMovingDate={setMovingDate}
             setPrevAddress={setPrevAddress}
             setNewAddress={setNewAddress}
+            setIsCompleted={setIsCompleted}
           />
         );
         break;
       case 1:
         step = (
           <SelectCategories
-            categories={categories}
-            setCategories={setCategories}
+            categories={selectedCategories}
+            setCategories={setSelectedCategories}
+            setIsCompleted={setIsCompleted}
           />
         );
         break;
@@ -46,11 +60,18 @@ export function ChangeAddress() {
   function handleConfirmModal() {
     openModal(
       <ConfirmSelection
+        closeModal={closeModal}
         movingDate={movingDate}
         prevAddress={prevAddress}
         newAddress={newAddress}
+        selectedCategories={selectedCategories}
+        handleSubmit={handleSubmit}
       />,
     );
+  }
+
+  function handleSubmit() {
+    console.log("handleSubmit clicked!!!");
   }
 
   return (
@@ -61,14 +82,15 @@ export function ChangeAddress() {
         gap: 2,
       }}
     >
+      {view()}
       <ProgressStepper
         steps={3}
         lastStep={1}
         activeStep={activeStep}
         setActiveStep={setActiveStep}
         handleConfirmModal={handleConfirmModal}
+        isDisabled={isCompleted}
       />
-      {view()}
     </Box>
   );
 }

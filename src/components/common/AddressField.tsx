@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -8,15 +8,27 @@ type AddressField = {
   postcodeLabel: string;
   addressLabel: string;
   width?: string;
+  onChange?: Dispatch<SetStateAction<string>>;
 };
 
 export function AddressField({
   postcodeLabel,
   addressLabel,
   width,
+  onChange,
 }: AddressField) {
-  const [showManualAddress, setShowManualAddress] =
-    React.useState<boolean>(false);
+  const [showManualAddress, setShowManualAddress] = useState<boolean>(false);
+  const [address, setAddress] = useState<Readonly<string>>("");
+
+  const [manualAddress, setManualAddress] = useState<Readonly<string>>("");
+  const [manualPostCode, setManualPostCode] = useState<Readonly<string>>("");
+
+  function handleAddress(event: any) {
+    const valueInput = event.target.value;
+    // Add validation checks for postcode and maybe error out if incorrect
+    // API call to get address and debounce to delay a call after 5 or 6 input
+    setAddress(valueInput);
+  }
   return (
     <Box
       sx={{
@@ -36,12 +48,14 @@ export function AddressField({
             label={addressLabel}
             variant="outlined"
             placeholder="e.g. 10 Downing St"
+            value={manualAddress}
           />
           <TextField
             id="outlined-postcode-label"
             label={postcodeLabel}
             variant="outlined"
             placeholder="e.g. SW1A 2AA"
+            value={manualPostCode}
           />
           <Link fontSize={12} onClick={() => setShowManualAddress(false)}>
             Search by post code
@@ -63,6 +77,8 @@ export function AddressField({
                 {...params}
                 label={postcodeLabel}
                 placeholder="e.g. SW1A 2AA"
+                value={address}
+                onChange={handleAddress}
               />
             )}
           />

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
 import { Typography, Box, Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
@@ -44,23 +44,68 @@ const categoriesData = [
   { title: "Banks" },
   { title: "Inform family & friends" },
 ];
+type Category = {
+  title: string;
+};
 
 type SelectCategoriesProps = {
   categories: ReadonlyArray<string>;
   setCategories: Dispatch<SetStateAction<readonly string[]>>;
+  setIsCompleted: Dispatch<SetStateAction<boolean>>;
 };
 
 export function SelectCategories({
   categories,
   setCategories,
 }: SelectCategoriesProps) {
-  function handleSearch(event: any) {}
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [filteredCategories, setFilteredCategories] = useState<
+    ReadonlyArray<Category>
+  >([]);
+  const [selectedCategories, setSelectedCategories] = useState<
+    ReadonlyArray<Category>
+  >([]);
+
+  useEffect(() => {
+    if (filteredCategories.length === 0) {
+      setFilteredCategories(categoriesData);
+    }
+  }, []);
+
+  function handleSearch(value: string): void {
+    const filteredItems =
+      value === ""
+        ? categoriesData
+        : categoriesData.filter((item) =>
+            item.title.toLowerCase().includes(value.toLowerCase()),
+          );
+    setFilteredCategories(filteredItems);
+  }
+
+  function handleSelect(event: any, category: Category) {
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      setSelectedCategories([...selectedCategories, category]);
+      setCategories(selectedCategories.map((item) => item.title));
+    } else {
+      const filteredItems = selectedCategories.filter(
+        (i) => i.title !== category.title,
+      );
+      setSelectedCategories(filteredItems);
+    }
+  }
+
+  function handleClear() {
+    handleSearch("");
+    setSearchValue("");
+    setSelectedCategories([]);
+    setCategories([]);
+  }
 
   return (
     <Box p={2}>
       <Typography variant="h4">
-        Select the relevant categories in which you would like your address to
-        be updated
+        Select relevant categories you would like your address to be updated.
       </Typography>
       <Box
         sx={{
@@ -69,13 +114,15 @@ export function SelectCategories({
           gap: 2,
           maxWidth: LargeWidth,
           m: "auto",
-          pt: 10,
+          pt: 8,
           height: "100%",
         }}
       >
-        <Box display={"flex"} justifyContent={"space-between"}>
-          <Typography>{categories.length} selected</Typography>
-          <Button variant="text" size="small">
+        <Box display="flex" justifyContent="space-between">
+          <Typography>
+            {categoriesData.length} items ({selectedCategories.length} selected)
+          </Typography>
+          <Button variant="text" size="small" onClick={handleClear}>
             Clear
           </Button>
         </Box>
@@ -83,23 +130,39 @@ export function SelectCategories({
           fullWidth
           label="Choose categories"
           placeholder="Search category"
-          onChange={(event) => handleSearch(event)}
-          value={""}
+          onChange={(ev) => {
+            setSearchValue(ev.target.value);
+            handleSearch(ev.target.value);
+          }}
+          value={searchValue}
         />
         <Box
           sx={{
-            maxHeight: 350,
+            maxHeight: 300,
             overflowY: "scroll",
             px: 2,
+            border: `1px solid ${"red"}`,
+            borderRadius: 2,
+            height: 300,
           }}
         >
           <FormGroup>
-            {categoriesData.map((item) => (
+            {filteredCategories.map((item) => (
               <FormControlLabel
-                control={<Checkbox defaultChecked />}
+                control={
+                  <Checkbox
+                    onChange={(event) => handleSelect(event, item)}
+                    checked={selectedCategories.includes(item)}
+                  />
+                }
                 label={item.title}
               />
             ))}
+            {!filteredCategories.length && (
+              <Box textAlign={"center"} mt={2}>
+                No data
+              </Box>
+            )}
           </FormGroup>
         </Box>
       </Box>
