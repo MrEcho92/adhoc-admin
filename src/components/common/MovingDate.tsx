@@ -3,7 +3,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 type MovingDateProps = {
   label?: string;
-  value?: Date;
+  value?: Date | null;
   setMovingDate?: Dispatch<React.SetStateAction<Date | null>>;
 };
 

@@ -1,10 +1,12 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import LoadingButton from "@mui/lab/LoadingButton";
 import CheckCircleSharpIcon from "@mui/icons-material/CheckCircleSharp";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
+import SendIcon from "@mui/icons-material/Send";
 
 type ConfirmSelectionProps = {
   movingDate: Date | null;
@@ -13,6 +15,7 @@ type ConfirmSelectionProps = {
   selectedCategories: ReadonlyArray<string>;
   closeModal: () => void;
   handleSubmit: () => void;
+  isLoading: boolean;
 };
 
 export function ConfirmSelection({
@@ -22,6 +25,7 @@ export function ConfirmSelection({
   selectedCategories,
   closeModal,
   handleSubmit,
+  isLoading,
 }: ConfirmSelectionProps) {
   return (
     <Box
@@ -46,6 +50,7 @@ export function ConfirmSelection({
         <Typography>Please confirm your details are correct.</Typography>
         <Typography>
           You're moving on the <span>{movingDate?.toLocaleString()}</span> from{" "}
+          <br />
           <span>{prevAddress}</span> to <span>{newAddress}</span>.
         </Typography>
         <Typography>Selected categories: </Typography>
@@ -62,9 +67,15 @@ export function ConfirmSelection({
           <Button variant="text" size="small" onClick={closeModal}>
             Cancel
           </Button>
-          <Button variant="contained" size="small" onClick={handleSubmit}>
-            Submit
-          </Button>
+          <LoadingButton
+            onClick={handleSubmit}
+            endIcon={<SendIcon />}
+            loading={isLoading}
+            loadingPosition="end"
+            variant="contained"
+          >
+            <span>Submit</span>
+          </LoadingButton>
         </Stack>
       </Box>
     </Box>

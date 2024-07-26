@@ -1,4 +1,4 @@
-import React, { Dispatch, useState } from "react";
+import React, { Dispatch } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -8,17 +8,22 @@ import { MovingDate } from "../../../components";
 const LargeWidth = "400px" as const;
 
 type AddressFinderProps = {
-  movingDate?: Date;
+  selectedMovingDate?: Date | null;
   setMovingDate?: Dispatch<React.SetStateAction<Date | null>>;
   setPrevAddress?: Dispatch<React.SetStateAction<string>>;
   setNewAddress?: Dispatch<React.SetStateAction<string>>;
   setIsCompleted?: Dispatch<React.SetStateAction<boolean>>;
+  newAddress?: Readonly<string>;
+  prevAddress?: Readonly<string>;
 };
 
 export function AddressFinder({
+  selectedMovingDate,
   setMovingDate,
   setPrevAddress,
   setNewAddress,
+  newAddress,
+  prevAddress,
 }: AddressFinderProps) {
   return (
     <Box p={2}>
@@ -39,6 +44,7 @@ export function AddressFinder({
           <MovingDate
             label="Select moving date"
             setMovingDate={setMovingDate}
+            value={selectedMovingDate}
           />
         </Box>
         <Divider />
@@ -47,6 +53,7 @@ export function AddressFinder({
           addressLabel="Previous address"
           width={LargeWidth}
           onChange={setPrevAddress}
+          selectedAddress={prevAddress}
         />
         <Divider />
         <AddressField
@@ -54,6 +61,7 @@ export function AddressFinder({
           addressLabel="New address"
           width={LargeWidth}
           onChange={setNewAddress}
+          selectedAddress={newAddress}
         />
       </Box>
     </Box>

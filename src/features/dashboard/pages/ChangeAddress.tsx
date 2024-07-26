@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 import ProgressStepper from "../components/ProgressStepper";
 import Box from "@mui/material/Box";
+import { useNavigate } from "react-router-dom";
 import {
   AddressFinder,
   SelectCategories,
   ConfirmSelection,
 } from "../components";
 import { useModal } from "../../../components";
+import * as API from "../../api/api";
+import { formattedDate } from "../../../utils/dateFormat";
 
 export function ChangeAddress() {
+  const navigate = useNavigate();
   const { openModal, closeModal } = useModal();
   const [activeStep, setActiveStep] = useState<number>(0);
   const [movingDate, setMovingDate] = useState<Date | null>(null);
@@ -18,10 +22,10 @@ export function ChangeAddress() {
     ReadonlyArray<string>
   >([]);
   const [isCompleted, setIsCompleted] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (movingDate && prevAddress && newAddress) {
-      console.log(movingDate, prevAddress, newAddress);
       setIsCompleted(false);
     } else {
       setIsCompleted(true);
@@ -34,6 +38,9 @@ export function ChangeAddress() {
       case 0:
         step = (
           <AddressFinder
+            selectedMovingDate={movingDate}
+            prevAddress={prevAddress}
+            newAddress={newAddress}
             setMovingDate={setMovingDate}
             setPrevAddress={setPrevAddress}
             setNewAddress={setNewAddress}
@@ -66,12 +73,35 @@ export function ChangeAddress() {
         newAddress={newAddress}
         selectedCategories={selectedCategories}
         handleSubmit={handleSubmit}
+        isLoading={isLoading}
       />,
     );
   }
 
-  function handleSubmit() {
-    console.log("handleSubmit clicked!!!");
+  async function handleSubmit() {
+    const userId = "user_id_1" as const;
+    const payload = {
+      user_id: userId,
+      moving_date: formattedDate(movingDate!),
+      old_address: prevAddress,
+      new_address: newAddress,
+      selected_categories: selectedCategories.map((cat: string) => ({
+        label: cat,
+      })),
+    };
+
+    try {
+      setIsLoading((prev) => !prev);
+      const response = await API.postMplan(payload);
+      if (response.data) {
+        navigate("/app");
+      }
+    } catch (err) {
+      console.error("Error submitting mplan: " + err);
+    } finally {
+      setIsLoading((prev) => !prev);
+    }
+    closeModal();
   }
 
   return (

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import { Typography, Box, Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
@@ -54,10 +54,7 @@ type SelectCategoriesProps = {
   setIsCompleted: Dispatch<SetStateAction<boolean>>;
 };
 
-export function SelectCategories({
-  categories,
-  setCategories,
-}: SelectCategoriesProps) {
+export function SelectCategories({ setCategories }: SelectCategoriesProps) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredCategories, setFilteredCategories] = useState<
     ReadonlyArray<Category>
@@ -84,15 +81,16 @@ export function SelectCategories({
 
   function handleSelect(event: any, category: Category) {
     const isChecked = event.target.checked;
+    let updatedCategories;
     if (isChecked) {
-      setSelectedCategories([...selectedCategories, category]);
-      setCategories(selectedCategories.map((item) => item.title));
+      updatedCategories = [...selectedCategories, category];
     } else {
-      const filteredItems = selectedCategories.filter(
-        (i) => i.title !== category.title,
+      updatedCategories = selectedCategories.filter(
+        (i) => i.title.toLowerCase() !== category.title.toLowerCase(),
       );
-      setSelectedCategories(filteredItems);
     }
+    setSelectedCategories(updatedCategories);
+    setCategories(updatedCategories.map((item) => item.title));
   }
 
   function handleClear() {
@@ -147,7 +145,7 @@ export function SelectCategories({
           }}
         >
           <FormGroup>
-            {filteredCategories.map((item) => (
+            {filteredCategories.map((item, idx) => (
               <FormControlLabel
                 control={
                   <Checkbox
@@ -155,6 +153,7 @@ export function SelectCategories({
                     checked={selectedCategories.includes(item)}
                   />
                 }
+                key={item.title + idx}
                 label={item.title}
               />
             ))}
