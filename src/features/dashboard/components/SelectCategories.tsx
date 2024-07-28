@@ -4,48 +4,13 @@ import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import * as API from "../../api/api";
 
 const LargeWidth = "400px" as const;
-const categoriesData = [
-  { title: "DLVA" },
-  { title: "Vehicle log book" },
-  { title: "Council tax" },
-  { title: "HM Revenue & Customs (HMRC)" },
-  { title: "Electoral" },
-  { title: "Department of Works and Pensions (DWP)" },
-  { title: "Energy" },
-  {
-    title: "Water",
-  },
-  { title: "NHS" },
-  { title: "TV" },
-  {
-    title: "Charity",
-  },
-  {
-    title: "Mobile",
-  },
-  { title: "Pharmacy" },
-  { title: "GP" },
-  {
-    title: "Dentist",
-  },
-  { title: "Hospital" },
-  { title: "Opticians" },
-  { title: "Breakdown" },
-  { title: "Pets" },
-  {
-    title: "Lottery cards",
-  },
-  { title: "Gyms" },
-  { title: "Royal Mail" },
-  { title: "Schools & Colleges" },
-  { title: "Home insurance" },
-  { title: "Banks" },
-  { title: "Inform family & friends" },
-];
-type Category = {
-  title: string;
+
+type CategoryData = {
+  name: string;
+  label: string;
 };
 
 type SelectCategoriesProps = {
@@ -57,40 +22,58 @@ type SelectCategoriesProps = {
 export function SelectCategories({ setCategories }: SelectCategoriesProps) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredCategories, setFilteredCategories] = useState<
-    ReadonlyArray<Category>
+    ReadonlyArray<CategoryData>
   >([]);
   const [selectedCategories, setSelectedCategories] = useState<
-    ReadonlyArray<Category>
+    ReadonlyArray<CategoryData>
   >([]);
+  const [categoryList, setCategoryList] = useState<ReadonlyArray<CategoryData>>(
+    [],
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    async function fetchCategories() {
+      try {
+        setIsLoading((prev) => !prev);
+        const response = await API.getCategories();
+        let data = response?.data;
+        setCategoryList(data);
+        setFilteredCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories: " + error);
+      } finally {
+        setIsLoading((prev) => !prev);
+      }
+    }
+
     if (filteredCategories.length === 0) {
-      setFilteredCategories(categoriesData);
+      fetchCategories();
     }
   }, []);
 
   function handleSearch(value: string): void {
     const filteredItems =
       value === ""
-        ? categoriesData
-        : categoriesData.filter((item) =>
-            item.title.toLowerCase().includes(value.toLowerCase()),
+        ? categoryList
+        : categoryList.filter((item) =>
+            item.name.toLowerCase().includes(value.toLowerCase()),
           );
     setFilteredCategories(filteredItems);
   }
 
-  function handleSelect(event: any, category: Category) {
+  function handleSelect(event: any, category: CategoryData) {
     const isChecked = event.target.checked;
     let updatedCategories;
     if (isChecked) {
       updatedCategories = [...selectedCategories, category];
     } else {
       updatedCategories = selectedCategories.filter(
-        (i) => i.title.toLowerCase() !== category.title.toLowerCase(),
+        (i) => i.name.toLowerCase() !== category.name.toLowerCase(),
       );
     }
     setSelectedCategories(updatedCategories);
-    setCategories(updatedCategories.map((item) => item.title));
+    setCategories(updatedCategories.map((item) => item.name));
   }
 
   function handleClear() {
@@ -98,6 +81,10 @@ export function SelectCategories({ setCategories }: SelectCategoriesProps) {
     setSearchValue("");
     setSelectedCategories([]);
     setCategories([]);
+  }
+
+  if (isLoading) {
+    return <Box>Loading...</Box>;
   }
 
   return (
@@ -118,7 +105,7 @@ export function SelectCategories({ setCategories }: SelectCategoriesProps) {
       >
         <Box display="flex" justifyContent="space-between">
           <Typography>
-            {categoriesData.length} items ({selectedCategories.length} selected)
+            {categoryList.length} items ({selectedCategories.length} selected)
           </Typography>
           <Button variant="text" size="small" onClick={handleClear}>
             Clear
@@ -153,8 +140,8 @@ export function SelectCategories({ setCategories }: SelectCategoriesProps) {
                     checked={selectedCategories.includes(item)}
                   />
                 }
-                key={item.title + idx}
-                label={item.title}
+                key={item.name + idx}
+                label={item.name}
               />
             ))}
             {!filteredCategories.length && (
