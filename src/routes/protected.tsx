@@ -53,6 +53,10 @@ export const protectRoutes: RouteObject[] = [
         element: <ChangeAddress />,
       },
       {
+        path: "/app/mplan/*",
+        element: <div>Mplan id</div>,
+      },
+      {
         path: "*",
         element: <Navigate to="/" replace />,
       },

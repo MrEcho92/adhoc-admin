@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { CardActions } from "@mui/material";
+import { CardActions, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { MplanSchema } from "../../../types";
 import * as API from "../../../features/api/api";
@@ -17,14 +17,14 @@ export function Dashboard() {
   useEffect(() => {
     async function fetchMplans() {
       try {
-        setIsLoading((prev) => !prev);
+        setIsLoading(true);
         const mplans = await API.getMplans("user_1");
         setMplans(mplans?.data);
       } catch (error) {
         console.error("Error getting Mplans: " + error);
-        setIsLoading((prev) => !prev);
+        setIsLoading(false);
       } finally {
-        setIsLoading((prev) => !prev);
+        setIsLoading(false);
       }
     }
     if (mPlans.length === 0) {
@@ -33,13 +33,10 @@ export function Dashboard() {
   }, [mPlans]);
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      <Box>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
         <Typography variant="h5">Welcome, Emmanuel</Typography>
-        <Card
-          sx={{ maxWidth: 345, borderRadius: "8px" }}
-          onClick={() => navigate("/app/create")}
-        >
+        <Card sx={{ maxWidth: 345, borderRadius: "8px" }}>
           <CardContent>
             <Typography gutterBottom variant="subtitle1">
               Let's get you started with your change of address
@@ -56,7 +53,38 @@ export function Dashboard() {
           </CardActions>
         </Card>
       </Box>
-      <Box>Mplan lists</Box>
+      <Box display={"flex"} flexDirection={"column"} gap={1}>
+        <Typography variant="h5">Mplan history</Typography>
+        <Stack direction="row" spacing={2}>
+          {mPlans.length > 0 ? (
+            mPlans.map((item, idx) => {
+              return (
+                <Card
+                  key={item.id + idx}
+                  sx={{ maxWidth: 300 }}
+                  onClick={() => navigate(`/app/mplan/${item.id}`)}
+                >
+                  <CardContent>
+                    <Typography fontSize={18}>{item.id}</Typography>
+                    <Typography fontSize={12}>
+                      New address: {item.new_address} / Old address:{" "}
+                      {item.old_address}
+                    </Typography>
+                    <Typography fontSize={12}>
+                      Old address: {item.old_address}
+                    </Typography>
+                    <Typography fontSize={12}>
+                      Moving on {item.moving_date.toString()}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              );
+            })
+          ) : (
+            <Box>No history</Box>
+          )}
+        </Stack>
+      </Box>
     </Box>
   );
 }
