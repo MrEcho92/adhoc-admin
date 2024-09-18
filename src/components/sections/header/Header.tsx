@@ -1,5 +1,5 @@
 import { Link as RouterLink } from "react-router-dom";
-import { Avatar, Box, Link, Stack } from "@mui/material";
+import { Avatar, Box, Stack } from "@mui/material";
 
 export function Header() {
   return (

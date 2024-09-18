@@ -7,10 +7,10 @@ import FacebookIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/X";
 
-const logoStyle = {
-  width: "140px",
-  height: "auto",
-};
+// const logoStyle = {
+//   width: "140px",
+//   height: "auto",
+// };
 
 function Copyright() {
   return (

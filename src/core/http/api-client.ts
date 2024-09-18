@@ -26,7 +26,7 @@ HTTPInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    const message = error.response?.data.message || error.message;
+    // const message = error.response?.data.message || error.message;
     // use Notification e.g. snackbar
     return Promise.reject(error);
   },
