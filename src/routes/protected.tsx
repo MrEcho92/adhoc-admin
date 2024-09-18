@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { Navigate, RouteObject, Outlet } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { CircularProgress } from "@mui/material";
-import { ProtectedLayout } from "../components/layout";
+import { ProtectedLayout } from "../components/Layout";
 import {
   Dashboard,
   ChangeAddress,
