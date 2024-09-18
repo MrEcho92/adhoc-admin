@@ -6,7 +6,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Link from "@mui/material/Link";
 import * as API from "../../features/api/api";
 
-type AddressField = {
+type AddressFieldProps = {
   postcodeLabel: string;
   addressLabel: string;
   width?: string;
@@ -20,9 +20,9 @@ export function AddressField({
   width,
   onChange,
   selectedAddress,
-}: AddressField) {
+}: AddressFieldProps) {
   const [showManualAddress, setShowManualAddress] = useState<boolean>(false);
-  const [address, setAddress] = useState<Readonly<string>>("");
+  const [, setAddress] = useState<Readonly<string>>("");
 
   const [manualAddress, setManualAddress] = useState<Readonly<string>>("");
   const [manualPostCode, setManualPostCode] = useState<Readonly<string>>("");
@@ -43,7 +43,7 @@ export function AddressField({
   const fetchOptions = async (query: string) => {
     try {
       const res = await API.getAddresses(query);
-      return res.data;
+      return res;
     } catch (err) {
       console.error("Error fetching Addresses" + err);
       setErrorFetchingAddress(true);
@@ -82,7 +82,7 @@ export function AddressField({
       setShowManualAddress(false);
       setInputPostCode(manualPostCode);
     }
-  }, [manualAddress, manualPostCode]);
+  }, [manualAddress, manualPostCode, debouncedFetchOptions]);
 
   return (
     <Box

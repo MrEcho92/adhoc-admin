@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { CardActions, Stack } from "@mui/material";
@@ -12,14 +13,16 @@ import * as API from "../../../features/api/api";
 export function Dashboard() {
   const navigate = useNavigate();
   const [mPlans, setMplans] = useState<ReadonlyArray<MplanSchema>>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchMplans() {
       try {
         setIsLoading(true);
-        const mplans = await API.getMplans("user_1");
-        setMplans(mplans?.data);
+        const mplans = await API.getMplans(
+          "8f512069-5b38-43d8-a5d2-b09b4de752ce",
+        );
+        setMplans(mplans);
       } catch (error) {
         console.error("Error getting Mplans: " + error);
         setIsLoading(false);
@@ -27,14 +30,14 @@ export function Dashboard() {
         setIsLoading(false);
       }
     }
-    if (mPlans.length === 0) {
+    if (!mPlans?.length) {
       fetchMplans();
     }
   }, [mPlans]);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <Typography variant="h5">Welcome, Emmanuel</Typography>
         <Card sx={{ maxWidth: 345, borderRadius: "8px" }}>
           <CardContent>
@@ -53,10 +56,11 @@ export function Dashboard() {
           </CardActions>
         </Card>
       </Box>
+      <Divider />
       <Box display={"flex"} flexDirection={"column"} gap={1}>
         <Typography variant="h5">Mplan history</Typography>
         <Stack direction="row" spacing={2}>
-          {mPlans.length > 0 ? (
+          {mPlans?.length > 0 ? (
             mPlans.map((item, idx) => {
               return (
                 <Card

@@ -7,12 +7,13 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
 import SendIcon from "@mui/icons-material/Send";
+import { CategoryData } from "../../../types";
 
 type ConfirmSelectionProps = {
   movingDate: Date | null;
   prevAddress: string;
   newAddress: string;
-  selectedCategories: ReadonlyArray<string>;
+  selectedCategories: ReadonlyArray<CategoryData>;
   closeModal: () => void;
   handleSubmit: () => void;
   isLoading: boolean;
@@ -57,7 +58,7 @@ export function ConfirmSelection({
         <Grid container spacing={0.5}>
           {selectedCategories.map((item, index) => (
             <Grid key={index} item>
-              <Chip label={item} />
+              <Chip label={item.name} />
             </Grid>
           ))}
         </Grid>

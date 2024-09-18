@@ -5,17 +5,13 @@ import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import * as API from "../../api/api";
+import { CategoryData } from "../../../types";
 
 const LargeWidth = "400px" as const;
 
-type CategoryData = {
-  name: string;
-  label: string;
-};
-
 type SelectCategoriesProps = {
-  categories: ReadonlyArray<string>;
-  setCategories: Dispatch<SetStateAction<readonly string[]>>;
+  categories: ReadonlyArray<CategoryData>;
+  setCategories: Dispatch<SetStateAction<readonly CategoryData[]>>;
   setIsCompleted: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -36,12 +32,12 @@ export function SelectCategories({ setCategories }: SelectCategoriesProps) {
     async function fetchCategories() {
       try {
         setIsLoading((prev) => !prev);
-        const response = await API.getCategories();
-        let data = response?.data;
+        const data = await API.getCategories();
         setCategoryList(data);
         setFilteredCategories(data);
       } catch (error) {
         console.error("Error fetching categories: " + error);
+        throw new Error("Error fetching categories: " + error);
       } finally {
         setIsLoading((prev) => !prev);
       }
@@ -50,6 +46,7 @@ export function SelectCategories({ setCategories }: SelectCategoriesProps) {
     if (filteredCategories.length === 0) {
       fetchCategories();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSearch(value: string): void {
@@ -73,7 +70,7 @@ export function SelectCategories({ setCategories }: SelectCategoriesProps) {
       );
     }
     setSelectedCategories(updatedCategories);
-    setCategories(updatedCategories.map((item) => item.name));
+    setCategories(updatedCategories);
   }
 
   function handleClear() {

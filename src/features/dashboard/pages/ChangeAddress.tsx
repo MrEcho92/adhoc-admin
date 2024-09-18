@@ -10,6 +10,7 @@ import {
 import { useModal } from "../../../components";
 import * as API from "../../api/api";
 import { formattedDate } from "../../../utils/dateFormat";
+import { CategoryData } from "../../../types";
 
 export function ChangeAddress() {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ export function ChangeAddress() {
   const [prevAddress, setPrevAddress] = useState<Readonly<string>>("");
   const [newAddress, setNewAddress] = useState<Readonly<string>>("");
   const [selectedCategories, setSelectedCategories] = useState<
-    ReadonlyArray<string>
+    ReadonlyArray<CategoryData>
   >([]);
   const [isCompleted, setIsCompleted] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -79,14 +80,14 @@ export function ChangeAddress() {
   }
 
   async function handleSubmit() {
-    const userId = "user_id_1" as const;
+    const userId = "8f512069-5b38-43d8-a5d2-b09b4de752ce" as const;
     const payload = {
       user_id: userId,
       moving_date: formattedDate(movingDate!),
       old_address: prevAddress,
       new_address: newAddress,
-      selected_categories: selectedCategories.map((cat: string) => ({
-        label: cat,
+      selected_categories: selectedCategories.map((cat: CategoryData) => ({
+        label: cat.label,
       })),
     };
 

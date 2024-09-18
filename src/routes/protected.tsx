@@ -3,7 +3,11 @@ import { Navigate, RouteObject, Outlet } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { CircularProgress } from "@mui/material";
 import { ProtectedLayout } from "../components/layout";
-import { Dashboard, ChangeAddress } from "../features/dashboard";
+import {
+  Dashboard,
+  ChangeAddress,
+  MplanDetailPage,
+} from "../features/dashboard";
 import { Header } from "../components";
 import { SidePanel } from "../components/sections/side-panel";
 
@@ -28,7 +32,7 @@ export function App() {
               flex: "1 1 auto",
               flexDirection: "column",
               width: "100%",
-              padding: "15px",
+              padding: "25px",
             }}
           >
             <Outlet />
@@ -53,8 +57,8 @@ export const protectRoutes: RouteObject[] = [
         element: <ChangeAddress />,
       },
       {
-        path: "/app/mplan/*",
-        element: <div>Mplan id</div>,
+        path: "/app/mplan/:mplanId",
+        element: <MplanDetailPage />,
       },
       {
         path: "*",

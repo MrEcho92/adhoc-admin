@@ -3,6 +3,11 @@ export type Category = {
   is_completed: string;
 };
 
+export type CategoryData = {
+  name: string;
+  label: string;
+};
+
 export type MplanSchema = {
   id: string;
   moving_date: Date;
