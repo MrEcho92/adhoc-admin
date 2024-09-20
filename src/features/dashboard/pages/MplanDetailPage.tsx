@@ -35,7 +35,7 @@ export function MplanDetailPage() {
   const [utilityData, setUtilityData] = useState<any[]>([]);
 
   const routeParams = useParams();
-  const userId = "8f512069-5b38-43d8-a5d2-b09b4de752ce" as const;
+  const userId = "9a58f52b-6c5f-4770-8d6f-eb782d64df91" as const;
 
   useEffect(() => {
     if (routeParams?.mplanId) {
@@ -59,9 +59,8 @@ export function MplanDetailPage() {
       throw new Error("Error fetching mplanDetail for mplanId" + mplanId);
     }
   }, []);
-  console.log(mplanDetails);
-  console.log(utilityData);
-  function nhsGroup(ut: any, key: string) {
+
+  function nhsGroup(ut: any, key: string): React.ReactNode {
     return (
       <Box p={2} key={key}>
         <Typography>{ut?.organisation_name}</Typography>
@@ -78,7 +77,7 @@ export function MplanDetailPage() {
     );
   }
 
-  function waterSupply(ut: any, key: string) {
+  function waterSupply(ut: any, key: string): React.ReactNode {
     return (
       <Box p={2} key={key}>
         <Typography>{ut?.company}</Typography>
@@ -133,7 +132,16 @@ export function MplanDetailPage() {
                   Eaque at deleniti itaque sequi qui pariatur provident aliquam,
                   odit quam exercitationem. Quam.
                 </Typography>
-                <Box>
+                <Typography>
+                  Track category you have completed. (total of{" "}
+                  {mplanDetails?.get("mplan")?.selected_categories?.length})
+                </Typography>
+                <Box
+                  sx={{
+                    maxHeight: 300,
+                    overflowY: "auto",
+                  }}
+                >
                   <FormGroup>
                     {mplanDetails
                       ?.get("mplan")
