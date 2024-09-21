@@ -102,15 +102,15 @@ export function ChangeAddress() {
     try {
       setIsLoading((prev) => !prev);
       const response = await API.postMplan(payload);
-      if (response.data) {
+      if (response) {
         navigate("/app");
       }
-      closeModal();
     } catch (err) {
       console.error("Error submitting mplan: " + err);
     } finally {
       setIsLoading((prev) => !prev);
     }
+    closeModal();
   }
 
   return (

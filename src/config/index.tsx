@@ -13,7 +13,7 @@ export const SidePanelItems = [
     label: "Home",
   },
   {
-    href: "/moving",
+    href: "/app/moving",
     icon: (
       <SvgIcon>
         <LocalShippingIcon />

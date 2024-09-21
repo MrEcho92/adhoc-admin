@@ -76,8 +76,10 @@ export function MplanDetailPage() {
         <Typography>
           {ut?.address1}, {ut?.city}, {ut?.county}, {ut?.postcode}
         </Typography>
-        {ut?.telephone ? <Typography>{ut?.telephone}</Typography> : null}
-        {ut?.website ? (
+        {ut?.telephone && ut?.telephone !== "NaN" ? (
+          <Typography>{ut?.telephone}</Typography>
+        ) : null}
+        {ut?.website && ut?.website !== "NaN" ? (
           <Link target="_blank" to={ut?.website}>
             {ut?.website}
           </Link>

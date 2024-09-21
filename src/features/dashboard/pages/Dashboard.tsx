@@ -65,7 +65,7 @@ export function Dashboard() {
               return (
                 <Card
                   key={item.id + idx}
-                  sx={{ maxWidth: 300 }}
+                  sx={{ maxWidth: 350, borderRadius: 4 }}
                   onClick={() =>
                     navigate(`/app/mplan/${item.id}`, {
                       state: { key: item.new_address },
@@ -73,15 +73,14 @@ export function Dashboard() {
                   }
                 >
                   <CardContent>
-                    <Typography fontSize={12}>
-                      New address: {item.new_address} / Old address:{" "}
-                      {item.old_address}
+                    <Typography fontSize={14} fontWeight="bold">
+                      Moving date {item.moving_date.toString()}
                     </Typography>
-                    <Typography fontSize={12}>
-                      Old address: {item.old_address}
+                    <Typography fontSize={10}>
+                      New address: {item.new_address}
                     </Typography>
-                    <Typography fontSize={12}>
-                      Moving on {item.moving_date.toString()}
+                    <Typography fontSize={10}>
+                      Previous address: {item.old_address}
                     </Typography>
                   </CardContent>
                 </Card>
