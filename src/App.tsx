@@ -1,9 +1,12 @@
 import React from "react";
+import { useRoutes } from "react-router-dom";
+import { publicRoutes, protectRoutes } from "./routes";
 import "./App.scss";
 import "../src/core";
 
 function App() {
-  return <div className="App"></div>;
+  const element = useRoutes([...publicRoutes, ...protectRoutes]);
+  return <div className="App">{element}</div>;
 }
 
 export default App;
