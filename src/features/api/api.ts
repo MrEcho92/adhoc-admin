@@ -13,8 +13,12 @@ export const getMplans = async (user_id: string) => {
   return await HTTPInstance.get("/mplans", { params }).then(({ data }) => data);
 };
 
-export const getMplanDetails = async (mplan_id: string, user_id: string) => {
-  const params = { mplan_id, user_id };
+export const getMplanDetails = async (
+  mplan_id: string,
+  user_id: string,
+  payload: any,
+) => {
+  const params = { mplan_id, user_id, ...payload };
   return await HTTPInstance.get("/mplans/detail", { params }).then(
     ({ data }) => data,
   );

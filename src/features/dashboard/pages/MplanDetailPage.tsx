@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -37,6 +37,14 @@ export function MplanDetailPage() {
   const routeParams = useParams();
   const userId = "9a58f52b-6c5f-4770-8d6f-eb782d64df91" as const;
 
+  const { state } = useLocation();
+  const dataKey = state?.key
+    ?.replaceAll(",", "-")
+    .replaceAll(" ", "")
+    .toLowerCase();
+  const payload = localStorage.getItem(dataKey);
+  const mplanPayload = payload ? JSON.parse(payload) : "";
+
   useEffect(() => {
     if (routeParams?.mplanId) {
       handleGetMplanDetails(routeParams?.mplanId);
@@ -47,7 +55,7 @@ export function MplanDetailPage() {
   const handleGetMplanDetails = useCallback(async (mplanId: string) => {
     try {
       setIsLoading(true);
-      const response = await getMplanDetails(mplanId, userId);
+      const response = await getMplanDetails(mplanId, userId, mplanPayload);
       const resMap = new Map();
       Object.entries(response).map(([key, value]) => {
         return resMap.set(key, value);
@@ -58,6 +66,7 @@ export function MplanDetailPage() {
       console.error("Error fetching mplanDetail for mplanId" + mplanId);
       throw new Error("Error fetching mplanDetail for mplanId" + mplanId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function nhsGroup(ut: any, key: string): React.ReactNode {

@@ -24,6 +24,7 @@ export function ChangeAddress() {
   >([]);
   const [isCompleted, setIsCompleted] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [addressMetaInfo, setAddressMetaInfo] = useState<any>({});
 
   useEffect(() => {
     if (movingDate && prevAddress && newAddress) {
@@ -46,6 +47,7 @@ export function ChangeAddress() {
             setPrevAddress={setPrevAddress}
             setNewAddress={setNewAddress}
             setIsCompleted={setIsCompleted}
+            setAddressMetaInfo={setAddressMetaInfo}
           />
         );
         break;
@@ -90,19 +92,25 @@ export function ChangeAddress() {
         label: cat.label,
       })),
     };
-
+    const metaKey = newAddress
+      .replaceAll(",", "-")
+      .replaceAll(" ", "")
+      .toLowerCase();
+    if (addressMetaInfo?.[metaKey]) {
+      localStorage.setItem(metaKey, JSON.stringify(addressMetaInfo?.[metaKey]));
+    }
     try {
       setIsLoading((prev) => !prev);
       const response = await API.postMplan(payload);
       if (response.data) {
         navigate("/app");
       }
+      closeModal();
     } catch (err) {
       console.error("Error submitting mplan: " + err);
     } finally {
       setIsLoading((prev) => !prev);
     }
-    closeModal();
   }
 
   return (

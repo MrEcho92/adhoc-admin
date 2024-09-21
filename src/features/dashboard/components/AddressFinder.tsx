@@ -15,6 +15,7 @@ type AddressFinderProps = {
   setIsCompleted?: Dispatch<React.SetStateAction<boolean>>;
   newAddress?: Readonly<string>;
   prevAddress?: Readonly<string>;
+  setAddressMetaInfo?: Dispatch<React.SetStateAction<any>>;
 };
 
 export function AddressFinder({
@@ -24,6 +25,7 @@ export function AddressFinder({
   setNewAddress,
   newAddress,
   prevAddress,
+  setAddressMetaInfo,
 }: AddressFinderProps) {
   return (
     <Box p={2}>
@@ -54,6 +56,7 @@ export function AddressFinder({
           width={LargeWidth}
           onChange={setPrevAddress}
           selectedAddress={prevAddress}
+          setAddressMetaInfo={setAddressMetaInfo}
         />
         <Divider />
         <AddressField
@@ -62,6 +65,7 @@ export function AddressFinder({
           width={LargeWidth}
           onChange={setNewAddress}
           selectedAddress={newAddress}
+          setAddressMetaInfo={setAddressMetaInfo}
         />
       </Box>
     </Box>

@@ -66,10 +66,13 @@ export function Dashboard() {
                 <Card
                   key={item.id + idx}
                   sx={{ maxWidth: 300 }}
-                  onClick={() => navigate(`/app/mplan/${item.id}`)}
+                  onClick={() =>
+                    navigate(`/app/mplan/${item.id}`, {
+                      state: { key: item.new_address },
+                    })
+                  }
                 >
                   <CardContent>
-                    <Typography fontSize={18}>{item.id}</Typography>
                     <Typography fontSize={12}>
                       New address: {item.new_address} / Old address:{" "}
                       {item.old_address}

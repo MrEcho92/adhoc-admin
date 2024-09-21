@@ -12,6 +12,7 @@ type AddressFieldProps = {
   width?: string;
   onChange?: Dispatch<SetStateAction<string>>;
   selectedAddress?: Readonly<string>;
+  setAddressMetaInfo?: Dispatch<SetStateAction<any[]>>;
 };
 
 export function AddressField({
@@ -20,6 +21,7 @@ export function AddressField({
   width,
   onChange,
   selectedAddress,
+  setAddressMetaInfo,
 }: AddressFieldProps) {
   const [showManualAddress, setShowManualAddress] = useState<boolean>(false);
   const [, setAddress] = useState<Readonly<string>>("");
@@ -35,9 +37,24 @@ export function AddressField({
   const [postCode, setPostCode] = useState<Readonly<string>>("");
 
   function handleAddress(_event: any, value: any) {
-    const address = `${value.formatted_address?.filter((item: any) => item.length > 0).join(",")} ${postCode}`;
+    const address = `${value.formatted_address?.filter((item: any) => item.length > 0).join(", ")}, ${postCode}`;
     setAddress(address);
     if (onChange) onChange(address);
+    if (setAddressMetaInfo && address) {
+      const metaKey = address
+        .replaceAll(",", "-")
+        .replaceAll(" ", "")
+        .toLowerCase();
+      setAddressMetaInfo((prev) => ({
+        ...prev,
+        [metaKey]: {
+          county: value.county,
+          district: value.district,
+          country: value.country,
+          town_or_city: value.town_or_city,
+        },
+      }));
+    }
   }
 
   const fetchOptions = async (query: string) => {
@@ -137,7 +154,7 @@ export function AddressField({
             filterOptions={(x) => x}
             loading={isLoading}
             getOptionLabel={(option: any) =>
-              `${option.formatted_address?.filter((item: any) => item.length > 0).join(",")} ${postCode}`
+              `${option.formatted_address?.filter((item: any) => item.length > 0).join(", ")}, ${postCode}`
             }
             onInputChange={(_event, value) => setInputPostCode(value)}
             onChange={(event, value) => {
